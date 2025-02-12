@@ -104,89 +104,96 @@ const Index = () => {
   };
 
   const handleOrder = (serviceId: number) => {
+    if (!user) {
+      toast({
+        variant: "destructive",
+        title: "Authentication required",
+        description: "Please sign in to order services.",
+      });
+      return;
+    }
     console.log("Ordering service:", serviceId);
     // Add order functionality here
   };
-
-  if (!user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-        <Card className="w-full max-w-md">
-          <Tabs defaultValue="signin">
-            <CardHeader>
-              <CardTitle className="text-center text-2xl font-bold">Welcome</CardTitle>
-              <CardDescription className="text-center">
-                Sign in to your account or create a new one
-              </CardDescription>
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
-              </TabsList>
-            </CardHeader>
-
-            <CardContent>
-              <TabsContent value="signin">
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <div>
-                    <Label htmlFor="signin-email">Email</Label>
-                    <div className="relative">
-                      <Input id="signin-email" name="email" type="email" required />
-                      <Mail className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="signin-password">Password</Label>
-                    <div className="relative">
-                      <Input id="signin-password" name="password" type="password" required />
-                      <Lock className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                    </div>
-                  </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Signing in..." : "Sign In"}
-                  </Button>
-                </form>
-              </TabsContent>
-
-              <TabsContent value="signup">
-                <form onSubmit={handleSignUp} className="space-y-4">
-                  <div>
-                    <Label htmlFor="signup-email">Email</Label>
-                    <div className="relative">
-                      <Input id="signup-email" name="email" type="email" required />
-                      <Mail className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="fullName">Full Name</Label>
-                    <div className="relative">
-                      <Input id="fullName" name="fullName" type="text" required />
-                      <User className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="signup-password">Password</Label>
-                    <div className="relative">
-                      <Input id="signup-password" name="password" type="password" required />
-                      <Lock className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                    </div>
-                  </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Signing up..." : "Sign Up"}
-                  </Button>
-                </form>
-              </TabsContent>
-            </CardContent>
-          </Tabs>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <Navigation />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+        {/* Auth Section (shown only when not logged in) */}
+        {!user && (
+          <div className="mb-24 max-w-md mx-auto">
+            <Card>
+              <Tabs defaultValue="signin">
+                <CardHeader>
+                  <CardTitle className="text-center text-2xl font-bold">Welcome</CardTitle>
+                  <CardDescription className="text-center">
+                    Sign in to your account or create a new one
+                  </CardDescription>
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="signin">Sign In</TabsTrigger>
+                    <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                  </TabsList>
+                </CardHeader>
+
+                <CardContent>
+                  <TabsContent value="signin">
+                    <form onSubmit={handleSignIn} className="space-y-4">
+                      <div>
+                        <Label htmlFor="signin-email">Email</Label>
+                        <div className="relative">
+                          <Input id="signin-email" name="email" type="email" required />
+                          <Mail className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="signin-password">Password</Label>
+                        <div className="relative">
+                          <Input id="signin-password" name="password" type="password" required />
+                          <Lock className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                        </div>
+                      </div>
+                      <Button type="submit" className="w-full" disabled={loading}>
+                        {loading ? "Signing in..." : "Sign In"}
+                      </Button>
+                    </form>
+                  </TabsContent>
+
+                  <TabsContent value="signup">
+                    <form onSubmit={handleSignUp} className="space-y-4">
+                      <div>
+                        <Label htmlFor="signup-email">Email</Label>
+                        <div className="relative">
+                          <Input id="signup-email" name="email" type="email" required />
+                          <Mail className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="fullName">Full Name</Label>
+                        <div className="relative">
+                          <Input id="fullName" name="fullName" type="text" required />
+                          <User className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="signup-password">Password</Label>
+                        <div className="relative">
+                          <Input id="signup-password" name="password" type="password" required />
+                          <Lock className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                        </div>
+                      </div>
+                      <Button type="submit" className="w-full" disabled={loading}>
+                        {loading ? "Signing up..." : "Sign Up"}
+                      </Button>
+                    </form>
+                  </TabsContent>
+                </CardContent>
+              </Tabs>
+            </Card>
+          </div>
+        )}
+
         {/* Hero Section */}
         <div className="text-center mb-12 animate-fade-in">
           <h1 className="text-4xl font-bold mb-4">
