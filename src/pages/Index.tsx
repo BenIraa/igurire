@@ -121,9 +121,12 @@ const Index = () => {
       <Navigation />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
-        {/* Auth Section (shown only when not logged in) */}
-        {!user && (
-          <div className="mb-24 max-w-md mx-auto">
+        {!user ? (
+          // Show auth form when user is not logged in
+          <div className="max-w-md mx-auto mb-12">
+            <h1 className="text-4xl font-bold text-center mb-8">
+              Boost Your Social Media Presence
+            </h1>
             <Card>
               <Tabs defaultValue="signin">
                 <CardHeader>
@@ -192,28 +195,28 @@ const Index = () => {
               </Tabs>
             </Card>
           </div>
-        )}
-
-        {/* Hero Section */}
-        <div className="text-center mb-12 animate-fade-in">
-          <h1 className="text-4xl font-bold mb-4">
-            Boost Your Social Media Presence
-          </h1>
-          <p className="text-lg text-muted-foreground mb-8">
-            High-quality social media services at competitive prices
-          </p>
-          
-          {/* Search Bar */}
-          <div className="max-w-md mx-auto flex gap-2">
-            <Input
-              placeholder="Search services..."
-              className="h-12"
-            />
-            <Button size="icon" className="h-12 w-12">
-              <Search className="h-5 w-5" />
-            </Button>
+        ) : (
+          // Show hero section when user is logged in
+          <div className="text-center mb-12 animate-fade-in">
+            <h1 className="text-4xl font-bold mb-4">
+              Boost Your Social Media Presence
+            </h1>
+            <p className="text-lg text-muted-foreground mb-8">
+              High-quality social media services at competitive prices
+            </p>
+            
+            {/* Search Bar */}
+            <div className="max-w-md mx-auto flex gap-2">
+              <Input
+                placeholder="Search services..."
+                className="h-12"
+              />
+              <Button size="icon" className="h-12 w-12">
+                <Search className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">
