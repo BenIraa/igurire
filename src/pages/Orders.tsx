@@ -1,24 +1,14 @@
 
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/Navigation";
-import { ServiceCard } from "@/components/ServiceCard";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { OrdersTable } from "@/components/orders/OrdersTable";
+import { ServicesGrid } from "@/components/orders/ServicesGrid";
 
 interface Service {
   id: string;
@@ -88,7 +78,6 @@ const OrdersPage = () => {
     },
   });
 
-  // Set up real-time subscription for order updates
   useEffect(() => {
     if (!user) return;
 
@@ -141,88 +130,19 @@ const OrdersPage = () => {
               </TabsList>
 
               <TabsContent value="services">
-                {servicesLoading ? (
-                  <div className="flex justify-center p-8">
-                    <Loader2 className="h-8 w-8 animate-spin" />
-                  </div>
-                ) : services?.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No services available
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {services?.map((service) => (
-                      <ServiceCard
-                        key={service.id}
-                        title={service.name}
-                        description={service.description || ""}
-                        price={service.price}
-                        category={service.category}
-                        onClick={() => handleOrder(service)}
-                      />
-                    ))}
-                  </div>
-                )}
+                <ServicesGrid
+                  services={services}
+                  isLoading={servicesLoading}
+                  onOrder={handleOrder}
+                />
               </TabsContent>
 
               <TabsContent value="orders">
-                {ordersLoading ? (
-                  <div className="flex justify-center p-8">
-                    <Loader2 className="h-8 w-8 animate-spin" />
-                  </div>
-                ) : orders?.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No orders found
-                  </div>
-                ) : (
-                  <div className="rounded-md border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Date</TableHead>
-                          <TableHead>Service</TableHead>
-                          <TableHead>Quantity</TableHead>
-                          <TableHead>Amount</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Order ID</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {orders?.map((order) => (
-                          <TableRow key={order.id}>
-                            <TableCell>
-                              {format(new Date(order.created_at), "PPp")}
-                            </TableCell>
-                            <TableCell>
-                              <div>
-                                <div className="font-medium">
-                                  {order.service.name}
-                                </div>
-                                <div className="text-sm text-muted-foreground">
-                                  {order.service.category}
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>{order.quantity}</TableCell>
-                            <TableCell>${order.amount}</TableCell>
-                            <TableCell>
-                              <Badge
-                                className={`${getStatusColor(
-                                  order.status
-                                )} text-white`}
-                              >
-                                {order.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              {order.api_order_id || "Pending"}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                )}
+                <OrdersTable
+                  orders={orders}
+                  isLoading={ordersLoading}
+                  getStatusColor={getStatusColor}
+                />
               </TabsContent>
             </Tabs>
           </CardContent>
