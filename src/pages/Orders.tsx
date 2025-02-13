@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/Navigation";
+import { ServiceCard } from "@/components/ServiceCard";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +18,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+
+interface Service {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  category: string;
+  min_quantity: number;
+  max_quantity: number;
+  active: boolean;
+}
 
 interface Order {
   id: string;
@@ -27,20 +40,10 @@ interface Order {
   status: string;
   target_url: string;
   api_order_id: string | null;
-  api_response: any;
   service: {
     name: string;
     category: string;
   };
-}
-
-interface Transaction {
-  id: string;
-  created_at: string;
-  type: string;
-  amount: number;
-  status: string;
-  description: string | null;
 }
 
 const statusColors = {
@@ -52,6 +55,21 @@ const statusColors = {
 
 const OrdersPage = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
+
+  const { data: services, isLoading: servicesLoading } = useQuery({
+    queryKey: ["services"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("services")
+        .select("*")
+        .eq("active", true)
+        .order("category");
+
+      if (error) throw error;
+      return data as Service[];
+    },
+  });
 
   const { data: orders, isLoading: ordersLoading } = useQuery({
     queryKey: ["orders", user?.id],
@@ -67,20 +85,6 @@ const OrdersPage = () => {
 
       if (error) throw error;
       return data as Order[];
-    },
-  });
-
-  const { data: transactions, isLoading: transactionsLoading } = useQuery({
-    queryKey: ["transactions", user?.id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("transactions")
-        .select("*")
-        .eq("user_id", user?.id)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      return data as Transaction[];
     },
   });
 
@@ -100,7 +104,6 @@ const OrdersPage = () => {
         },
         (payload) => {
           console.log("Real-time update:", payload);
-          // React Query will automatically update the UI
         }
       )
       .subscribe();
@@ -109,6 +112,13 @@ const OrdersPage = () => {
       subscription.unsubscribe();
     };
   }, [user]);
+
+  const handleOrder = async (service: Service) => {
+    toast({
+      title: "Coming soon!",
+      description: "Order placement will be implemented in the next update.",
+    });
+  };
 
   const getStatusColor = (status: string) => {
     return statusColors[status as keyof typeof statusColors] || "bg-gray-500";
@@ -121,14 +131,39 @@ const OrdersPage = () => {
       <main className="container mx-auto px-4 py-8">
         <Card>
           <CardHeader>
-            <CardTitle>Orders & Transactions</CardTitle>
+            <CardTitle>Services & Orders</CardTitle>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="orders" className="space-y-4">
+            <Tabs defaultValue="services" className="space-y-4">
               <TabsList>
-                <TabsTrigger value="orders">Orders</TabsTrigger>
-                <TabsTrigger value="transactions">Transactions</TabsTrigger>
+                <TabsTrigger value="services">Available Services</TabsTrigger>
+                <TabsTrigger value="orders">My Orders</TabsTrigger>
               </TabsList>
+
+              <TabsContent value="services">
+                {servicesLoading ? (
+                  <div className="flex justify-center p-8">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                  </div>
+                ) : services?.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No services available
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {services?.map((service) => (
+                      <ServiceCard
+                        key={service.id}
+                        title={service.name}
+                        description={service.description || ""}
+                        price={service.price}
+                        category={service.category}
+                        onClick={() => handleOrder(service)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
 
               <TabsContent value="orders">
                 {ordersLoading ? (
@@ -182,60 +217,6 @@ const OrdersPage = () => {
                             <TableCell>
                               {order.api_order_id || "Pending"}
                             </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                )}
-              </TabsContent>
-
-              <TabsContent value="transactions">
-                {transactionsLoading ? (
-                  <div className="flex justify-center p-8">
-                    <Loader2 className="h-8 w-8 animate-spin" />
-                  </div>
-                ) : transactions?.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No transactions found
-                  </div>
-                ) : (
-                  <div className="rounded-md border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Date</TableHead>
-                          <TableHead>Type</TableHead>
-                          <TableHead>Amount</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Description</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {transactions?.map((transaction) => (
-                          <TableRow key={transaction.id}>
-                            <TableCell>
-                              {format(
-                                new Date(transaction.created_at),
-                                "PPp"
-                              )}
-                            </TableCell>
-                            <TableCell className="capitalize">
-                              {transaction.type}
-                            </TableCell>
-                            <TableCell>
-                              ${Math.abs(transaction.amount)}
-                            </TableCell>
-                            <TableCell>
-                              <Badge
-                                className={`${getStatusColor(
-                                  transaction.status
-                                )} text-white`}
-                              >
-                                {transaction.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>{transaction.description}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
