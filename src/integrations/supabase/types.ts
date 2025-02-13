@@ -9,9 +9,35 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      api_credentials: {
+        Row: {
+          api_key: string
+          api_url: string
+          created_at: string
+          id: string
+          provider: string
+        }
+        Insert: {
+          api_key: string
+          api_url: string
+          created_at?: string
+          id?: string
+          provider: string
+        }
+        Update: {
+          api_key?: string
+          api_url?: string
+          created_at?: string
+          id?: string
+          provider?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           amount: number
+          api_order_id: string | null
+          api_response: Json | null
           created_at: string
           id: string
           quantity: number
@@ -23,6 +49,8 @@ export type Database = {
         }
         Insert: {
           amount: number
+          api_order_id?: string | null
+          api_response?: Json | null
           created_at?: string
           id?: string
           quantity: number
@@ -34,6 +62,8 @@ export type Database = {
         }
         Update: {
           amount?: number
+          api_order_id?: string | null
+          api_response?: Json | null
           created_at?: string
           id?: string
           quantity?: number
@@ -90,6 +120,8 @@ export type Database = {
       services: {
         Row: {
           active: boolean | null
+          api_provider: string | null
+          api_service_id: string | null
           category: string
           created_at: string
           description: string | null
@@ -101,6 +133,8 @@ export type Database = {
         }
         Insert: {
           active?: boolean | null
+          api_provider?: string | null
+          api_service_id?: string | null
           category: string
           created_at?: string
           description?: string | null
@@ -112,6 +146,8 @@ export type Database = {
         }
         Update: {
           active?: boolean | null
+          api_provider?: string | null
+          api_service_id?: string | null
           category?: string
           created_at?: string
           description?: string | null
