@@ -8,13 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { format } from "date-fns";
 import {
   Table,
@@ -25,12 +18,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  BanknoteIcon,
-  Banknote,
-  CreditCard,
-  Wallet,
-} from "lucide-react";
 
 interface Transaction {
   id: string;
@@ -42,19 +29,11 @@ interface Transaction {
   description: string | null;
 }
 
-const paymentMethods = [
-  { id: "momo", name: "MTN Mobile Money", icon: Wallet },
-  { id: "binance", name: "Binance Pay", icon: BanknoteIcon },
-  { id: "paypal", name: "PayPal", icon: Banknote },
-  { id: "visa", name: "Visa/Mastercard", icon: CreditCard },
-];
-
 const BalancePage = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [fullName, setFullName] = useState("");
   const [amount, setAmount] = useState("");
-  const [selectedMethod, setSelectedMethod] = useState("momo");
 
   const { data: profile } = useQuery({
     queryKey: ["profile", user?.id],
@@ -114,8 +93,8 @@ const BalancePage = () => {
         user_id: user?.id,
         type: "deposit",
         status: "pending",
-        payment_method: selectedMethod,
-        description: `Deposit via ${selectedMethod.toUpperCase()}`,
+        payment_method: "momo",
+        description: "Deposit via MTN Mobile Money",
       });
 
     if (transactionError) {
@@ -127,18 +106,10 @@ const BalancePage = () => {
       return;
     }
 
-    // For MTN MoMo, show the USSD code
-    if (selectedMethod === "momo") {
-      toast({
-        title: "Payment Instructions",
-        description: "Dial *182*8*1*594812# to complete your payment",
-      });
-    } else {
-      toast({
-        title: "Coming Soon",
-        description: "This payment method will be available soon",
-      });
-    }
+    toast({
+      title: "Payment Instructions",
+      description: "Dial *182*8*1*594812# to complete your payment",
+    });
 
     // Reset form
     setFullName("");
@@ -202,30 +173,8 @@ const BalancePage = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label>Payment Method</Label>
-                  <Select
-                    value={selectedMethod}
-                    onValueChange={setSelectedMethod}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select payment method" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {paymentMethods.map((method) => (
-                        <SelectItem key={method.id} value={method.id}>
-                          <div className="flex items-center gap-2">
-                            <method.icon className="h-4 w-4" />
-                            <span>{method.name}</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
                 <Button type="submit" className="w-full">
-                  Add Funds
+                  Notify Payment
                 </Button>
               </form>
             </CardContent>
