@@ -165,6 +165,7 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          payment_method: string
           status: string
           type: string
           user_id: string
@@ -174,6 +175,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          payment_method?: string
           status: string
           type: string
           user_id: string
@@ -183,6 +185,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          payment_method?: string
           status?: string
           type?: string
           user_id?: string
