@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import {
-  BanknotesIcon,
+  BanknoteIcon,
   Banknote,
   CreditCard,
   Wallet,
@@ -44,7 +44,7 @@ interface Transaction {
 
 const paymentMethods = [
   { id: "momo", name: "MTN Mobile Money", icon: Wallet },
-  { id: "binance", name: "Binance Pay", icon: BanknotesIcon },
+  { id: "binance", name: "Binance Pay", icon: BanknoteIcon },
   { id: "paypal", name: "PayPal", icon: Banknote },
   { id: "visa", name: "Visa/Mastercard", icon: CreditCard },
 ];
