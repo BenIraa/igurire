@@ -169,6 +169,15 @@ const BalancePage = () => {
               <CardTitle>Add Funds</CardTitle>
             </CardHeader>
             <CardContent>
+              {/* MoMo Code Display */}
+              <div className="mb-6 p-4 bg-muted rounded-lg text-center">
+                <h3 className="text-sm font-medium mb-2">MTN MoMo Payment Code</h3>
+                <p className="text-2xl font-bold font-mono">*182*8*1*594812#</p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Use this code to complete your MTN Mobile Money payment
+                </p>
+              </div>
+
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="fullName">Full Name</Label>
