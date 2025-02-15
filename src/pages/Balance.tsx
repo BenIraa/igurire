@@ -158,7 +158,7 @@ const BalancePage = () => {
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold">
-                ${profile?.balance.toFixed(2) || "0.00"}
+                {profile?.balance.toLocaleString()} RWF
               </div>
             </CardContent>
           </Card>
@@ -190,12 +190,12 @@ const BalancePage = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="amount">Amount ($)</Label>
+                  <Label htmlFor="amount">Amount (RWF)</Label>
                   <Input
                     id="amount"
                     type="number"
                     min="0"
-                    step="0.01"
+                    step="1"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Enter amount"
@@ -256,7 +256,7 @@ const BalancePage = () => {
                         {format(new Date(transaction.created_at), "PPp")}
                       </TableCell>
                       <TableCell className="capitalize">{transaction.type}</TableCell>
-                      <TableCell>${transaction.amount.toFixed(2)}</TableCell>
+                      <TableCell>{transaction.amount.toLocaleString()} RWF</TableCell>
                       <TableCell className="capitalize">
                         {transaction.payment_method}
                       </TableCell>

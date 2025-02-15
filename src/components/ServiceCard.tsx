@@ -23,7 +23,7 @@ export const ServiceCard = ({ title, description, price, category, onClick }: Se
       <CardContent>
         <p className="text-sm text-muted-foreground">{description}</p>
         <div className="mt-4 text-xl font-bold">
-          ${price.toFixed(2)}
+          {price.toLocaleString()} RWF
         </div>
       </CardContent>
       <CardFooter>

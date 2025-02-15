@@ -136,7 +136,7 @@ export const OrderForm = ({ selectedService, onClose }: OrderFormProps) => {
               <div>
                 <Label>Total Amount</Label>
                 <Input
-                  value={`$${(selectedService.price * quantity).toFixed(2)}`}
+                  value={`${(selectedService.price * quantity).toLocaleString()} RWF`}
                   disabled
                 />
               </div>
