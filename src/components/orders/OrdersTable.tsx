@@ -52,19 +52,19 @@ export const OrdersTable = ({ orders, isLoading, getStatusColor }: OrdersTablePr
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Date</TableHead>
+            <TableHead>Order ID</TableHead>
             <TableHead>Service</TableHead>
             <TableHead>Quantity</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Order ID</TableHead>
+            <TableHead>Date</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {orders.map((order) => (
             <TableRow key={order.id}>
               <TableCell>
-                {format(new Date(order.created_at), "PPp")}
+                {order.api_order_id || "Pending"}
               </TableCell>
               <TableCell>
                 <div>
@@ -79,12 +79,12 @@ export const OrdersTable = ({ orders, isLoading, getStatusColor }: OrdersTablePr
               <TableCell>{order.quantity}</TableCell>
               <TableCell>${order.amount}</TableCell>
               <TableCell>
-                <Badge className={`${getStatusColor(order.status)} text-white`}>
+                <Badge className={`${getStatusColor(order.status)} capitalize`}>
                   {order.status}
                 </Badge>
               </TableCell>
               <TableCell>
-                {order.api_order_id || "Pending"}
+                {format(new Date(order.created_at), "PPp")}
               </TableCell>
             </TableRow>
           ))}
