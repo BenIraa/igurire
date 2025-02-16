@@ -1,13 +1,17 @@
-# Welcome to your Lovable project
+# iGurire Platform
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/f60b3f1e-22b4-42b5-a7ad-6e366ae5c862
+**URL**: 
 
-## How can I edit this code?
+## Features I have so far?
 
-There are several ways of editing your application.
-
+1. User Auth and Logout 
+2. Services (available services from backend)
+3. order (order from exsting services available and tracking order progress)
+4. add funds (With MoMo code admin is the one to comfirm transaction User be able to track Transaction)
+5. 
+   
 **Use Lovable**
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/f60b3f1e-22b4-42b5-a7ad-6e366ae5c862) and start prompting.
