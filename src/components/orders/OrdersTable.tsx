@@ -64,7 +64,7 @@ export const OrdersTable = ({ orders, isLoading, getStatusColor }: OrdersTablePr
           {orders.map((order) => (
             <TableRow key={order.id}>
               <TableCell>
-                {order.api_order_id || "Pending"}
+                {order.id}
               </TableCell>
               <TableCell>
                 <div>
