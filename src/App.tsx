@@ -1,32 +1,42 @@
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { Toaster } from "@/components/ui/toaster";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import IndexPage from "@/pages/Index";
-import ServicesPage from "@/pages/Services";
-import OrdersPage from "@/pages/Orders";
-import BalancePage from "@/pages/Balance";
-import AuthPage from "@/pages/auth";
-import NotFoundPage from "@/pages/NotFound";
-import "./App.css";
+
+// Pages
+import Index from "@/pages/Index";
+import Balance from "@/pages/Balance";
+import Services from "@/pages/Services";
+import Orders from "@/pages/Orders";
+import Auth from "@/pages/auth";
+import NotFound from "@/pages/NotFound";
+import AdminDashboard from "@/pages/admin";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <Router>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<IndexPage />} />
-            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route
+              path="/balance"
+              element={
+                <ProtectedRoute>
+                  <Balance />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/services"
               element={
                 <ProtectedRoute>
-                  <ServicesPage />
+                  <Services />
                 </ProtectedRoute>
               }
             />
@@ -34,23 +44,23 @@ function App() {
               path="/orders"
               element={
                 <ProtectedRoute>
-                  <OrdersPage />
+                  <Orders />
                 </ProtectedRoute>
               }
             />
             <Route
-              path="/balance"
+              path="/admin"
               element={
                 <ProtectedRoute>
-                  <BalancePage />
+                  <AdminDashboard />
                 </ProtectedRoute>
               }
             />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
         </AuthProvider>
-      </BrowserRouter>
+      </Router>
     </QueryClientProvider>
   );
 }

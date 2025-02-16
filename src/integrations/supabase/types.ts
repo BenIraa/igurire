@@ -226,7 +226,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: {
+        Args: {
+          user_id: string
+        }
+        Returns: boolean
+      }
+      update_user_balance: {
+        Args: {
+          target_user_id: string
+          new_balance: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       user_role: "admin" | "user"
