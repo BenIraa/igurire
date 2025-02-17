@@ -77,7 +77,7 @@ export const OrdersTable = ({ orders, isLoading, getStatusColor }: OrdersTablePr
                 </div>
               </TableCell>
               <TableCell>{order.quantity}</TableCell>
-              <TableCell>${order.amount}</TableCell>
+              <TableCell>{order.amount.toLocaleString()} RWF</TableCell>
               <TableCell>
                 <Badge className={`${getStatusColor(order.status)} capitalize`}>
                   {order.status}
