@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -33,6 +34,22 @@ export const OrderForm = ({ selectedService, onClose }: OrderFormProps) => {
   const [targetUrl, setTargetUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Query to get user's profile including balance
+  const { data: profile } = useQuery({
+    queryKey: ["profile", user?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user?.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user,
+  });
+
   const handlePlaceOrder = async () => {
     if (!selectedService || !user) return;
 
@@ -54,10 +71,20 @@ export const OrderForm = ({ selectedService, onClose }: OrderFormProps) => {
       return;
     }
 
+    const orderAmount = selectedService.price * quantity;
+
+    // Check if user has enough balance
+    if (!profile || profile.balance < orderAmount) {
+      toast({
+        variant: "destructive",
+        title: "Insufficient balance",
+        description: `Your balance (${profile?.balance.toLocaleString()} RWF) is not enough to place this order (${orderAmount.toLocaleString()} RWF). Please add funds to your account.`,
+      });
+      return;
+    }
+
     try {
       setIsSubmitting(true);
-
-      const amount = selectedService.price * quantity;
 
       const { data: order, error: orderError } = await supabase
         .from("orders")
@@ -65,7 +92,7 @@ export const OrderForm = ({ selectedService, onClose }: OrderFormProps) => {
           service_id: selectedService.id,
           user_id: user.id,
           quantity,
-          amount,
+          amount: orderAmount,
           target_url: targetUrl,
           status: "pending"
         })
