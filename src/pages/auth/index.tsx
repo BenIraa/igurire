@@ -1,17 +1,18 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -33,52 +34,84 @@ const Auth = () => {
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isLoading) return;
+
+    setIsLoading(true);
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Error signing in",
+          description: error.message,
+        });
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
       toast({
         variant: "destructive",
-        title: "Error signing in",
-        description: error.message,
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isLoading) return;
+
+    setIsLoading(true);
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const fullName = formData.get("fullName") as string;
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
         },
-      },
-    });
+      });
 
-    if (error) {
+      if (error) {
+        let errorMessage = error.message;
+        if (error.message.includes("rate_limit")) {
+          errorMessage = "Please wait a minute before trying to sign up again.";
+        }
+        toast({
+          variant: "destructive",
+          title: "Error signing up",
+          description: errorMessage,
+        });
+      } else {
+        toast({
+          title: "Check your email",
+          description: "We sent you a confirmation link.",
+        });
+      }
+    } catch (error) {
+      console.error("Sign up error:", error);
       toast({
         variant: "destructive",
-        title: "Error signing up",
-        description: error.message,
+        title: "Error",
+        description: "An unexpected error occurred. Please try again in a moment.",
       });
-    } else {
-      toast({
-        title: "Check your email",
-        description: "We sent you a confirmation link.",
-      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -108,8 +141,8 @@ const Auth = () => {
                   <Label htmlFor="signin-password">Password</Label>
                   <Input id="signin-password" name="password" type="password" required />
                 </div>
-                <Button type="submit" className="w-full">
-                  Sign In
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Signing in..." : "Sign In"}
                 </Button>
               </form>
             </TabsContent>
@@ -128,8 +161,8 @@ const Auth = () => {
                   <Label htmlFor="signup-password">Password</Label>
                   <Input id="signup-password" name="password" type="password" required />
                 </div>
-                <Button type="submit" className="w-full">
-                  Sign Up
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Signing up..." : "Sign Up"}
                 </Button>
               </form>
             </TabsContent>
