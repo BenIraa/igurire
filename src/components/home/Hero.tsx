@@ -1,7 +1,8 @@
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Search, Instagram, Twitter, Facebook, Youtube, TiktokIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export const Hero = () => {
   return (
@@ -13,7 +14,7 @@ export const Hero = () => {
         High-quality social media services at competitive prices
       </p>
       
-      <div className="max-w-md mx-auto flex gap-2">
+      <div className="max-w-md mx-auto flex gap-2 mb-8">
         <Input
           placeholder="Search services..."
           className="h-12"
@@ -21,6 +22,55 @@ export const Hero = () => {
         <Button size="icon" className="h-12 w-12">
           <Search className="h-5 w-5" />
         </Button>
+      </div>
+
+      {/* Social Media Icons */}
+      <div className="flex justify-center gap-6 mb-12">
+        <Button variant="ghost" size="icon" className="rounded-full hover:text-pink-500">
+          <Instagram className="h-6 w-6" />
+        </Button>
+        <Button variant="ghost" size="icon" className="rounded-full hover:text-blue-400">
+          <Twitter className="h-6 w-6" />
+        </Button>
+        <Button variant="ghost" size="icon" className="rounded-full hover:text-blue-600">
+          <Facebook className="h-6 w-6" />
+        </Button>
+        <Button variant="ghost" size="icon" className="rounded-full hover:text-red-600">
+          <Youtube className="h-6 w-6" />
+        </Button>
+        <Button variant="ghost" size="icon" className="rounded-full hover:text-black">
+          <TiktokIcon className="h-6 w-6" />
+        </Button>
+      </div>
+
+      {/* Service Categories */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+        {/* Cheapest */}
+        <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg shadow-sm border border-green-200 hover:shadow-md transition-shadow">
+          <div className="text-green-600 font-semibold text-lg mb-2">Cheapest</div>
+          <p className="text-sm text-green-700">Best prices for your social media growth</p>
+          <Badge variant="secondary" className="mt-4 bg-green-100 text-green-700">
+            Save up to 50%
+          </Badge>
+        </div>
+
+        {/* Best Recommended */}
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg shadow-sm border border-blue-200 hover:shadow-md transition-shadow">
+          <div className="text-blue-600 font-semibold text-lg mb-2">Best Recommended</div>
+          <p className="text-sm text-blue-700">Top-rated services by our customers</p>
+          <Badge variant="secondary" className="mt-4 bg-blue-100 text-blue-700">
+            Highly Rated
+          </Badge>
+        </div>
+
+        {/* Black Friday */}
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg shadow-sm border border-purple-200 hover:shadow-md transition-shadow">
+          <div className="text-purple-600 font-semibold text-lg mb-2">Black Friday</div>
+          <p className="text-sm text-purple-700">Special deals and discounts</p>
+          <Badge variant="secondary" className="mt-4 bg-purple-100 text-purple-700">
+            Limited Time
+          </Badge>
+        </div>
       </div>
     </div>
   );
