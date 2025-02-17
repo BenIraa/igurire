@@ -6,6 +6,7 @@ import { Navigation } from "@/components/Navigation";
 import { BalanceCard } from "@/components/balance/BalanceCard";
 import { MoMoPaymentForm } from "@/components/balance/MoMoPaymentForm";
 import { TransactionHistory } from "@/components/balance/TransactionHistory";
+import { ReferralCard } from "@/components/balance/ReferralCard";
 import type { Transaction } from "@/types/transaction";
 
 const BalancePage = () => {
@@ -39,6 +40,19 @@ const BalancePage = () => {
     },
   });
 
+  const { data: referrals } = useQuery({
+    queryKey: ["referrals", user?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("referrals")
+        .select("*")
+        .eq("referrer_id", user?.id);
+
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -46,6 +60,13 @@ const BalancePage = () => {
       <main className="container mx-auto px-4 pt-24 pb-8">
         <div className="grid gap-8 md:grid-cols-2">
           <BalanceCard balance={profile?.balance || 0} />
+          <ReferralCard 
+            referralCode={profile?.referral_code || ""} 
+            referralCount={referrals?.length || 0}
+          />
+        </div>
+
+        <div className="mt-8">
           <MoMoPaymentForm />
         </div>
 
