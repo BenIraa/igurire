@@ -173,7 +173,7 @@ const Auth = () => {
         </Tabs>
         </div>
         <div className="w-full md:w-1/2 flex items-center justify-center p-6 bg-gradient-to-r from-blue-500 to-purple-600">
-        <img src="" alt="" />
+        <img src="https://img.freepik.com/free-vector/gradient-facebook-post-frame_52683-146743.jpg?t=st=1739874248~exp=1739877848~hmac=6c9be3668c7da6a21a5eab1b0d8d0158789f102e1d58c2e6fe2599cbdc7ff542&w=1380" className="rounded-2xl" alt="" />
         </div>
         </div>
       </Card>
