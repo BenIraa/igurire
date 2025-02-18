@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Mail, Lock, User} from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
@@ -116,17 +117,19 @@ const Auth = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600  p-6">
+      <Card className="w-full max-w-4xl shadow-lg rounded-lg overflow-hidden">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2  p-6 bg-white">
         <Tabs defaultValue="signin">
           <CardHeader>
-            <CardTitle className="text-center text-2xl font-bold">Welcome</CardTitle>
-            <CardDescription className="text-center">
+            <CardTitle className="text-center text-3xl font-bold text-gray-800">Welcome</CardTitle>
+            <CardDescription className="text-center text-gray-600">
               Sign in to your account or create a new one
             </CardDescription>
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mt-4">
+              <TabsTrigger value="signin" className="text-gray-800">Sign In</TabsTrigger>
+              <TabsTrigger value="signup" className="text-gray-800">Sign Up</TabsTrigger>
             </TabsList>
           </CardHeader>
 
@@ -138,7 +141,7 @@ const Auth = () => {
                   <Input id="signin-email" name="email" type="email" required />
                 </div>
                 <div>
-                  <Label htmlFor="signin-password">Password</Label>
+                  <Label htmlFor="signin-password" className="text-gray-700">Password</Label>
                   <Input id="signin-password" name="password" type="password" required />
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
@@ -150,15 +153,15 @@ const Auth = () => {
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div>
-                  <Label htmlFor="signup-email">Email</Label>
+                  <Label htmlFor="signup-email" className="text-gray-700">Email</Label>
                   <Input id="signup-email" name="email" type="email" required />
                 </div>
                 <div>
-                  <Label htmlFor="fullName">Full Name</Label>
+                  <Label htmlFor="fullName" className="text-gray-700">Full Name</Label>
                   <Input id="fullName" name="fullName" type="text" required />
                 </div>
                 <div>
-                  <Label htmlFor="signup-password">Password</Label>
+                  <Label htmlFor="signup-password" className="text-gray-700">Password</Label>
                   <Input id="signup-password" name="password" type="password" required />
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
@@ -168,8 +171,13 @@ const Auth = () => {
             </TabsContent>
           </CardContent>
         </Tabs>
+        </div>
+        <div className="w-full md:w-1/2 flex items-center justify-center p-6 bg-gradient-to-r from-blue-500 to-purple-600">
+        <img src="" alt="" />
+        </div>
+        </div>
       </Card>
-    </div>
+      </div>
   );
 };
 
