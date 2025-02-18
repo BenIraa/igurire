@@ -1,13 +1,12 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, CreditCard, LayoutDashboard, History, Package, LogOut, InfoIcon, Info } from 'lucide-react';
+import { Menu, X, CreditCard, LayoutDashboard, History, Package, LogOut, Info } from 'lucide-react';
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Navigation = () => {
+export const AuthNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
@@ -26,12 +25,10 @@ export const Navigation = () => {
   });
 
   const menuItems = [
-    { label: 'Home', icon: LayoutDashboard, path: '/' },
+    { label: 'Dashboard', icon: LayoutDashboard, path: '/' },
     { label: 'Services', icon: Package, path: '/services' },
     { label: 'Orders', icon: History, path: '/orders' },
-    ...(user ? [
-      { label: 'Balance', icon: CreditCard, path: '/balance' },
-    ] : []),
+    { label: 'Balance', icon: CreditCard, path: '/balance' },
     ...(isAdmin ? [{ label: 'Admin', icon: LayoutDashboard, path: '/admin' }] : []),
   ];
 
@@ -106,14 +103,15 @@ export const Navigation = () => {
               <Button 
                 variant="ghost"
                 className="w-full justify-start space-x-2"
-                onClick={handleLogout}
+                onClick={() => {
+                  handleLogout();
+                  setIsOpen(false);
+                }}
               >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
               </Button>
             )}
-            
-              
           </div>
         )}
       </div>
