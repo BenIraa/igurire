@@ -65,7 +65,7 @@ const Index = () => {
         {!user ? (
           <div className="max-w-md mx-auto mb-12">
             <h1 className="text-4xl font-bold text-center mb-7">
-              Boost Your Social Media Presence
+              Boost Your Social Media Acoounts
             </h1>
             <AuthForm />
           </div>
