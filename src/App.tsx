@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { createGlobalStyle } from "styled-components"; // Import createGlobalStyle
 
 // Pages
 import Index from "@/pages/Index";
@@ -15,6 +16,13 @@ import NotFound from "@/pages/NotFound";
 import AdminDashboard from "@/pages/admin";
 
 const queryClient = new QueryClient();
+const GlobalStyle = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+`;
 
 function App() {
   return (

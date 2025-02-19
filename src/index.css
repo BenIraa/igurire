@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -33,6 +35,7 @@
     @apply border-border;
   }
   body {
+    font-family: 'Poppins', sans-serif;
     @apply bg-background text-foreground;
   }
 }

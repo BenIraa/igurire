@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -148,6 +148,9 @@ const Auth = () => {
                   {isLoading ? "Signing in..." : "Sign In"}
                 </Button>
               </form>
+              <div className="text-center mt-4">
+                <Link to="/" className="text-gray-600">Back to home page</Link>
+               </div>
             </TabsContent>
 
             <TabsContent value="signup">
@@ -168,6 +171,9 @@ const Auth = () => {
                   {isLoading ? "Signing up..." : "Sign Up"}
                 </Button>
               </form>
+              <div className="text-center mt-4">
+                <Link to="/" className="text-gray-600">Back to home page</Link>
+               </div>
             </TabsContent>
           </CardContent>
         </Tabs>

@@ -41,7 +41,7 @@ export const Navigation = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b z-50">
+    <nav className="fixed top-0 left-0 right-0 bg-gradient-to-r from-blue-500 to-purple-500   z-50 text-white font-poppins">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0 font-semibold text-xl">
@@ -117,6 +117,7 @@ export const Navigation = () => {
           </div>
         )}
       </div>
+      <div className="border-t border-white mt-4 "></div>
     </nav>
   );
 };
