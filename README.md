@@ -6,11 +6,12 @@
 
 ## Features I have so far?
 
-1. User Auth and Logout 
-2. Services (available services from backend)
-3. order (order from exsting services available and tracking order progress)
-4. add funds (With MoMo code admin is the one to comfirm transaction User be able to track Transaction)
-5. Balance updation after making orders   
+1. User Auth and Logout
+2. landing page and dashboard landing page 
+3. Services (available services from backend)
+4. order (order from exsting services available and tracking order progress)
+5. add funds (With MoMo code admin is the one to comfirm transaction User be able to track Transaction)
+6. Balance updation after making orders   
 **Use Lovable**
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/f60b3f1e-22b4-42b5-a7ad-6e366ae5c862) and start prompting.
